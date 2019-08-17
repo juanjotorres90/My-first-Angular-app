@@ -12,3 +12,38 @@
 </div>
 
 
+<div class="container">
+        <h3>4. Debugging </h3>
+        </div>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h2>My Servers</h2>
+      <button class="btn btn-primary" (click)="onAddServer()">Add Server</button>
+      <br><br>
+      <ul class="list-group">
+        <li
+          class="list-group-item"
+          *ngFor="let server of servers; let i = index"
+          (click)="onRemoveServer(i)">{{ server }}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+<h3>5. Components & databinding Deep dive </h3>
+</div>
+<div class="container">
+<app-cockpit (serverCreated)="onServerAdded($event)"(bpCreated)="onBlueprintAdded($event)"></app-cockpit>
+    <hr>
+    <div class="row">
+      <div class="col-12">
+  <app-server-element 
+  *ngFor="let serverElement of serverElements"
+  [srvElement]="serverElement">
+</app-server-element>
+      </div>
+    </div>
+  </div>
