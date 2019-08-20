@@ -1,20 +1,20 @@
 <div class="container">
-    <div class="row">
-        <div class="col-12 mt-5">
-            <h3>I'm in the AppComponent!</h3>
-            <hr>
-            <app-servers></app-servers>
-            <hr>
-            <app-warning-alert></app-warning-alert>
-            <app-success-alert></app-success-alert>
-        </div> 
-    </div> 
+  <div class="row">
+    <div class="col-12 mt-5">
+      <h3>I'm in the AppComponent!</h3>
+      <hr>
+      <app-servers></app-servers>
+      <hr>
+      <app-warning-alert></app-warning-alert>
+      <app-success-alert></app-success-alert>
+    </div>
+  </div>
 </div>
 
 
 <div class="container">
-        <h3>4. Debugging </h3>
-        </div>
+  <h3>4. Debugging </h3>
+</div>
 <div class="container">
   <div class="row">
     <div class="col-12">
@@ -22,10 +22,8 @@
       <button class="btn btn-primary" (click)="onAddServer()">Add Server</button>
       <br><br>
       <ul class="list-group">
-        <li
-          class="list-group-item"
-          *ngFor="let server of servers; let i = index"
-          (click)="onRemoveServer(i)">{{ server }}</li>
+        <li class="list-group-item" *ngFor="let server of servers; let i = index" (click)="onRemoveServer(i)">
+          {{ server }}</li>
       </ul>
     </div>
   </div>
@@ -33,17 +31,46 @@
 
 
 <div class="container">
-<h3>5. Components & databinding Deep dive </h3>
+  <h3>5. Components & databinding Deep dive </h3>
 </div>
 <div class="container">
-<app-cockpit (serverCreated)="onServerAdded($event)"(bpCreated)="onBlueprintAdded($event)"></app-cockpit>
-    <hr>
-    <div class="row">
-      <div class="col-12">
-  <app-server-element 
-  *ngFor="let serverElement of serverElements"
-  [srvElement]="serverElement">
-</app-server-element>
-      </div>
+  <app-cockpit (serverCreated)="onServerAdded($event)" (bpCreated)="onBlueprintAdded($event)"></app-cockpit>
+  <hr>
+  <div class="row">
+    <div class="col-12">
+      <button class="btn btn-primary" (click)="onChangeFirst()">Change first Element</button>
+      <button class="btn btn-danger" (click)="onDestroyFirst()">Destroy first Component</button>
+
+      <app-server-element *ngFor="let serverElement of serverElements" [srvElement]="serverElement"
+        [name]="serverElement.name">
+        <p #contentParagraph>
+          <strong *ngIf="serverElement.type === 'server'" style="color: red">{{ serverElement.content }}</strong>
+          <em *ngIf="serverElement.type === 'blueprint'">{{ serverElement.content }}</em>
+        </p>
+      </app-server-element>
     </div>
   </div>
+</div>
+
+
+<div class="container">
+  <h3>5. Components & databinding ASSIGNMENT </h3>
+</div>
+<div class="container">
+  <div class="row">
+
+    <div class="col-12">
+      <app-game-control (intervalFired)="onIntervalFired($event)"></app-game-control>
+    </div>
+
+  </div>
+  <div class="row">
+
+      <div class="col-6">
+    <app-odd *ngFor="let oddNumber of oddNumbers" [number]="oddNumber"></app-odd>
+      </div>
+      <div class="col-6">
+          <app-even *ngFor="let evenNumber of evenNumbers" [number]="evenNumber"></app-even>
+            </div>
+    </div>
+</div>

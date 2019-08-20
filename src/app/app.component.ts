@@ -17,6 +17,8 @@ export class AppComponent {
     const position = id;
     this.servers.splice(position, 1);
   } */
+  oddNumbers: number[] = [];
+  evenNumbers: number[] = [];
 
 
   serverElements = [{type: 'server', name: 'Testserver', content: 'Just a test'}];
@@ -36,6 +38,17 @@ export class AppComponent {
       content: blueprintData.serverContent
     });
   }
+onChangeFirst() {
+  this.serverElements[0].name = 'Changed!';
+}
+
+onDestroyFirst() {
+  this.serverElements.splice(0, 1);
+}
 
 
+
+onIntervalFired(firedNumber: number) {
+  firedNumber % 2 === 0 ? this.evenNumbers.push(firedNumber) : this.oddNumbers.push(firedNumber);
+}
 }
