@@ -23,6 +23,15 @@ export class AppComponent {
 
   serverElements = [{type: 'server', name: 'Testserver', content: 'Just a test'}];
 
+
+  // 7.Directives
+  numbers = [1, 2, 3, 4, 5];
+  oddNumbers7 = [1, 3, 5];
+  evenNumbers7 = [2, 4];
+  onlyOdd = false;
+  value = 10;
+
+
   onServerAdded(serverData: {serverName: string, serverContent: string}) {
     this.serverElements.push({
       type: 'server',
