@@ -1,12 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AccountsService } from './accounts.service';
+import { UserService } from './users.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   // styleUrls: ['./app.component.css']
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [UserService]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
+constructor(private accountsService: AccountsService) {}
+
+
 /*   servers = [];
 
   onAddServer() {
@@ -24,12 +31,17 @@ export class AppComponent {
   serverElements = [{type: 'server', name: 'Testserver', content: 'Just a test'}];
 
 
-  // 7.Directives
+  // ! 7.Directives
   numbers = [1, 2, 3, 4, 5];
   oddNumbers7 = [1, 3, 5];
   evenNumbers7 = [2, 4];
   onlyOdd = false;
   value = 10;
+
+accounts: {name: string, status: string}[] = [];
+
+
+
 
 
   onServerAdded(serverData: {serverName: string, serverContent: string}) {
@@ -59,5 +71,13 @@ onDestroyFirst() {
 
 onIntervalFired(firedNumber: number) {
   firedNumber % 2 === 0 ? this.evenNumbers.push(firedNumber) : this.oddNumbers.push(firedNumber);
+}
+
+
+
+// ! 9 Services
+
+ngOnInit() {
+  this.accounts = this.accountsService.accounts;
 }
 }
