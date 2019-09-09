@@ -179,3 +179,25 @@
     -->
   </div>
 </div>
+
+<div class="container">
+  <h3>11. Changes Pages with Routing</h3>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-sm-10 col-md-8 mb-3">
+      <ul class="nav nav-tabs">
+        <li role="presentation" class="nav-item btn-outline-light" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a routerLink="/" class="nav-link">Home</a></li>
+        <li role="presentation" class="nav-item btn-outline-light" routerLinkActive="active"><a routerLink="/servers" class="nav-link">Servers</a></li>
+        <li role="presentation" class="nav-item btn-outline-light" routerLinkActive="active"><a [routerLink]="['/users']" class="nav-link">Users</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-sm-10 col-md-8">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+</div>

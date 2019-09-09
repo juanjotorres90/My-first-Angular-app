@@ -23,6 +23,22 @@ import { ActiveUsersComponent } from './active-users/active-users.component';
 import { InactiveUsersComponent } from './inactive-users/inactive-users.component';
 // import { UserService } from './users.service';
 import { CounterService } from './counter.service';
+import { HomeComponent } from './home/home.component';
+import { UsersComponent } from './users/users.component';
+import { UserComponent } from './users/user/user.component';
+import { EditServerComponent } from './servers-dos/edit-server/edit-server.component';
+import { ServersDosComponent } from './servers-dos/servers-dos.component';
+import { ServerDosComponent } from './servers-dos/server-dos/server-dos.component';
+import { ServersService } from './servers-dos/servers.service';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AppRoutingModule } from './app-routing.module';
+import { AuthService } from './auth.service';
+import { AuthGuard } from './auth-guard.service';
+import { CanDeactivateGuard } from './servers-dos/edit-server/can-deactivate-guard.service';
+import { ErrorPageComponent } from './error-page/error-page.component';
+import { ServerResolver } from './servers-dos/server-dos/server-resolver.service';
+
+
 
 @NgModule({
   declarations: [
@@ -42,13 +58,22 @@ import { CounterService } from './counter.service';
     AccountComponent,
     NewAccountComponent,
     ActiveUsersComponent,
-    InactiveUsersComponent
+    InactiveUsersComponent,
+    HomeComponent,
+    UsersComponent,
+    UserComponent,
+    EditServerComponent,
+    ServersDosComponent,
+    ServerDosComponent,
+    PageNotFoundComponent,
+    ErrorPageComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    AppRoutingModule
   ],
-  providers: [AccountsService, LoggingService, CounterService],
+  providers: [AccountsService, LoggingService, CounterService, ServersService, AuthService, AuthGuard, CanDeactivateGuard, ServerResolver],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
