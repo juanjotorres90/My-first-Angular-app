@@ -11,7 +11,7 @@
   </div>
 </div>
 
-
+<hr>
 <div class="container">
   <h3>4. Debugging </h3>
 </div>
@@ -29,10 +29,11 @@
   </div>
 </div>
 
-
+<hr>
 <div class="container">
   <h3>5. Components & databinding</h3>
 </div>
+<hr>
 <div class="container">
   <app-cockpit (serverCreated)="onServerAdded($event)" (bpCreated)="onBlueprintAdded($event)"></app-cockpit>
   <hr>
@@ -52,10 +53,11 @@
   </div>
 </div>
 
-
+<hr>
 <div class="container">
   <h3>5. Components & databinding ASSIGNMENT </h3>
 </div>
+<hr>
 <div class="container">
   <div class="row">
 
@@ -74,11 +76,11 @@
     </div>
   </div>
 </div>
-
+<hr>
 <div class="container">
   <h3>7. Directives </h3>
 </div>
-
+<hr>
 <div class="container">
   <div class="row">
     <div class="col-12">
@@ -143,11 +145,11 @@
     </div>
   </div>
 </div>
-
+<hr>
 <div class="container">
   <h3>9. Using Services and Dependency Injection </h3>
 </div>
-
+<hr>
 <div class="container">
   <div class="row">
     <div class="col-12 col-md-8">
@@ -161,11 +163,11 @@
     </div>
   </div>
 </div>
-
+<hr>
 <div class="container">
   <h3>9. Using Services and Dependency Injection ASSIGNMENT</h3>
 </div>
-
+<hr>
 <div class="container">
   <div class="row">
     <div class="col-12 col-md-8">
@@ -179,11 +181,11 @@
     -->
   </div>
 </div>
-
+<hr>
 <div class="container">
   <h3>11. Changes Pages with Routing</h3>
 </div>
-
+<hr>
 <div class="container">
   <div class="row">
     <div class="col-12 col-sm-10 col-md-8 mb-3">
@@ -200,4 +202,101 @@
     </div>
   </div>
 
+</div>
+<hr>
+<div class="container">
+  <h3>13. Observables (In another file)</h3>
+</div>
+<hr>
+<div class="container">
+  <h3>15. Handling Forms in Angular Apps</h3>
+</div>
+<hr>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-sm-10 col-md-8">
+      <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+        <div
+        id="user-data"
+        ngModelGroup="userData"
+        #userData="ngModelGroup">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+            type="text"
+            id="username"
+            class="form-control"
+            ngModel
+            name="username"
+            required>
+          </div>
+          <button
+          class="btn btn-secondary"
+          type="button"
+          (click)="suggestUserName()">Suggest an Username</button>
+          <div class="form-group">
+            <label for="email">Mail</label>
+            <input
+            type="email"
+            id="email"
+            class="form-control"
+            ngModel
+            name="email"
+            required
+            email
+            #email="ngModel">
+            <span class="form-text" *ngIf="!email.valid && email.touched">Please enter a valid email!</span>
+          </div>
+        </div>
+        <p *ngIf="!userData.valid && userData.touched">User Data is invalid!</p>
+        <div class="form-group">
+          <label for="secret">Secret Questions</label>
+          <select
+          id="secret"
+          class="form-control"
+          [ngModel]="defaultQuestion"
+          name="secret">
+            <option value="pet">Your first Pet?</option>
+            <option value="teacher">Your first teacher?</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <textarea
+          class="form-control"
+          name="questionAnswer"
+          rows="3"
+          [(ngModel)]="answer"></textarea>
+        </div>
+        <p>Your reply: {{ answer }}</p>
+        <div class="radio" *ngFor="let gender of genders">
+          <label>
+            <input
+            type="radio"
+            name="gender"
+            ngModel
+            [value]="gender"
+            required>
+            {{ gender }}
+          </label>
+        </div>
+        <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="!f.valid">Submit</button>
+      </form>
+
+    </div>
+  </div>
+  <hr>
+  <div class="row" *ngIf="submitted">
+<div class="col-xs-12">
+  <h3>Your Data</h3>
+  <p>Username: {{ user.username }}</p>
+  <p>Mail: {{ user.email }}</p>
+  <p>Secret Question: Your first {{ user.secretQuestion }}</p>
+  <p>Answer: {{ user.answer }}</p>
+  <p>Gender: {{ user.gender }}</p>
+
+</div>
+  </div>
 </div>
