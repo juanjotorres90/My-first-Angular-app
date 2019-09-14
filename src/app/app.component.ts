@@ -1,7 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AccountsService } from './accounts.service';
 import { UserService } from './users.service';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { resolve } from 'path';
+import { reject } from 'q';
+import { CustomValidators } from './custom-validators';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +27,13 @@ export class AppComponent implements OnInit {
     gender: ''
   };
   submitted = false;
+
+
+  signupFormR: FormGroup;
+  forbiddenUsernames = ['Chris', 'Anna'];
+
+  projectForm: FormGroup;
+
 
   constructor(private accountsService: AccountsService) {}
 
@@ -120,9 +131,92 @@ export class AppComponent implements OnInit {
     this.signupForm.reset();
   }
 
+
+
+  onSubmitR() {
+    console.log(this.signupFormR);
+    this.signupFormR.reset(); // ! If I want to only reset certain values indicate it through an object inside reset({})
+  }
+
+  onAddHobby() {
+    const control = new FormControl(null, Validators.required);
+    (this.signupFormR.get('hobbies') as FormArray).push(control);
+  }
+
+  forbiddenNames(control: FormControl): {[s: string]: boolean} {
+    if (this.forbiddenUsernames.indexOf(control.value) !== -1) {
+      return {'nameIsForbidden': true};
+    }
+  }
+
+  forbiddenEmails(control: FormControl): Promise<any> | Observable<any> {
+    const promise = new Promise<any>((resolve, reject) => {
+      setTimeout(() => {
+        if (control.value === 'test@test.com') {
+          resolve({'emailIsForbidden': true});
+        } else {
+          resolve(null);
+        }
+      }, 1500);
+    });
+    return promise;
+  }
+
+
+
+  onSaveProject() {
+    console.log(this.projectForm.value);
+  }
+
   // ! 9. Services
 
   ngOnInit() {
     this.accounts = this.accountsService.accounts;
+
+
+
+    // ! 15. Forms
+
+    this.signupFormR = new FormGroup({
+      'userData': new FormGroup({
+        'username': new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]),
+        'email': new FormControl(null, [Validators.required, Validators.email], this.forbiddenEmails)
+      }),
+      'gender': new FormControl('male'),
+      'hobbies': new FormArray([])
+    });
+    // this.signupFormR.valueChanges.subscribe(
+    //   (value) => console.log(value)
+    // );
+    this.signupFormR.statusChanges.subscribe(
+      (value) => console.log(value)
+    );
+    this.signupFormR.setValue({
+      'userData': {
+        'username': 'Juanjo',
+        'email': 'juanjo@test.com'
+      },
+      'gender': 'male',
+      'hobbies': []
+    });
+    this.signupFormR.patchValue({
+      'userData': {
+        'username': 'Anna'
+      }
+    });
+
+
+
+
+
+    // ! 15. Assignment
+
+    this.projectForm = new FormGroup({
+      'projectName': new FormControl(
+        null,
+        [Validators.required, CustomValidators.invalidProjectName], CustomValidators.asyncInvalidProjectName),
+      'email': new FormControl(null, [Validators.required, Validators.email]),
+      'projectStatus': new FormControl('critical')
+    });
   }
 }

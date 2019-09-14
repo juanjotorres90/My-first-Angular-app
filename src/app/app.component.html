@@ -212,6 +212,7 @@
   <h3>15. Handling Forms in Angular Apps</h3>
 </div>
 <hr>
+<!-- Template driven -->
 <div class="container">
   <div class="row">
     <div class="col-12 col-sm-10 col-md-8">
@@ -289,7 +290,7 @@
   </div>
   <hr>
   <div class="row" *ngIf="submitted">
-<div class="col-xs-12">
+<div class="col-12">
   <h3>Your Data</h3>
   <p>Username: {{ user.username }}</p>
   <p>Mail: {{ user.email }}</p>
@@ -298,5 +299,110 @@
   <p>Gender: {{ user.gender }}</p>
 
 </div>
+  </div>
+</div>
+<hr>
+<!-- Reactive -->
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-sm-10 col-md-8">
+      <form [formGroup]="signupFormR" (ngSubmit)="onSubmitR()">
+
+        <div formGroupName="userData">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              formControlName="username"
+              class="form-control">
+              <span
+              class="form-text"
+              *ngIf="!signupFormR.get('userData.username').valid && signupFormR.get('userData.username').touched">
+              <span *ngIf="signupFormR.get('userData.username').errors['nameIsForbidden']">This name is invalid!</span>
+              <span *ngIf="signupFormR.get('userData.username').errors['required']">This field is required!</span>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="email">email</label>
+            <input
+              type="text"
+              id="email"
+              formControlName="email"
+              class="form-control">
+              <span
+              class="form-text"
+              *ngIf="!signupFormR.get('userData.email').valid && signupFormR.get('userData.email').touched">Please enter a valid email!</span>
+          </div>
+        </div>
+
+        <div class="radio" *ngFor="let gender of genders">
+          <label>
+            <input
+              type="radio"
+              [value]="gender"
+              formControlName="gender">{{ gender }}
+          </label>
+        </div>
+
+        <div formArrayName="hobbies">
+          <h4>Your hobbies</h4>
+          <button class="btn btn-secondary" type="button" (click)="onAddHobby()">Add Hobby</button>
+          <div class="form-group"
+          *ngFor="let hobbyControl of signupFormR.get('hobbies').controls; let i = index">
+            <input type="text" class="form-control" [formControlName]="i">
+          </div>
+        </div>
+
+        <span
+        class="form-text"
+        *ngIf="!signupFormR.valid && signupFormR.touched">Please enter valid data!</span>
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="container">
+  <h3>15. Handling Forms in Angular Apps ASSIGNMENT</h3>
+</div>
+<hr>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-sm-10 col-md-8">
+      <form [formGroup]="projectForm" (ngSubmit)="onSaveProject()">
+        <div class="form-group">
+          <label for="name">Project Name</label>
+          <input
+          type="text"
+          id="name"
+          formControlName="projectName"
+          class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="email">Mail</label>
+            <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="status">Projectstatus</label>
+            <select
+            id="status"
+            formControlName="projectStatus"
+            class="form-control">
+              <option value="stable">Stable</option>
+              <option value="critical">Critical</option>
+              <option value="finished">Finished</option>
+            </select>
+          </div>
+      <button class="btn btn-primary" type="submit">Create Project</button>
+      </form>
+
+
+    </div>
   </div>
 </div>
