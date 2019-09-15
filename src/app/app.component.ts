@@ -3,8 +3,6 @@ import { AccountsService } from './accounts.service';
 import { UserService } from './users.service';
 import { NgForm, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { resolve } from 'path';
-import { reject } from 'q';
 import { CustomValidators } from './custom-validators';
 
 @Component({
