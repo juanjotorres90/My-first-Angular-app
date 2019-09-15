@@ -1,9 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { AccountsService } from './accounts.service';
 import { UserService } from './users.service';
 import { NgForm, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { CustomValidators } from './custom-validators';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { Post } from './post.model';
+import { PostsService } from './posts.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +16,7 @@ import { CustomValidators } from './custom-validators';
   styleUrls: ['./app.component.css'],
   providers: [UserService]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('f', {static: false}) signupForm: NgForm; // ! 15. Forms
   defaultQuestion = 'teacher';
   answer = '';
@@ -68,10 +72,17 @@ export class AppComponent implements OnInit {
   ];
   filteredStatus = '';
 
+// ! 18. Http Requests
+
+loadedPosts: Post[] = [];
+isFetching = false;
+error = null;
+private errorSub: Subscription;
 
 
-
-  constructor(private accountsService: AccountsService) {}
+  constructor(private accountsService: AccountsService,
+              private http: HttpClient,
+              private postsService: PostsService) {}
 
 
 
@@ -181,7 +192,7 @@ export class AppComponent implements OnInit {
 
   forbiddenNames(control: FormControl): {[s: string]: boolean} {
     if (this.forbiddenUsernames.indexOf(control.value) !== -1) {
-      return {'nameIsForbidden': true};
+      return {nameIsForbidden: true};
     }
   }
 
@@ -189,7 +200,7 @@ export class AppComponent implements OnInit {
     const promise = new Promise<any>((resolve, reject) => {
       setTimeout(() => {
         if (control.value === 'test@test.com') {
-          resolve({'emailIsForbidden': true});
+          resolve({emailIsForbidden: true});
         } else {
           resolve(null);
         }
@@ -218,12 +229,12 @@ export class AppComponent implements OnInit {
     // ! 15. Forms
 
     this.signupFormR = new FormGroup({
-      'userData': new FormGroup({
-        'username': new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]),
-        'email': new FormControl(null, [Validators.required, Validators.email], this.forbiddenEmails)
+      userData: new FormGroup({
+        username: new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]),
+        email: new FormControl(null, [Validators.required, Validators.email], this.forbiddenEmails)
       }),
-      'gender': new FormControl('male'),
-      'hobbies': new FormArray([])
+      gender: new FormControl('male'),
+      hobbies: new FormArray([])
     });
     // this.signupFormR.valueChanges.subscribe(
     //   (value) => console.log(value)
@@ -232,16 +243,16 @@ export class AppComponent implements OnInit {
       (value) => console.log(value)
     );
     this.signupFormR.setValue({
-      'userData': {
-        'username': 'Juanjo',
-        'email': 'juanjo@test.com'
+      userData: {
+        username: 'Juanjo',
+        email: 'juanjo@test.com'
       },
-      'gender': 'male',
-      'hobbies': []
+      gender: 'male',
+      hobbies: []
     });
     this.signupFormR.patchValue({
-      'userData': {
-        'username': 'Anna'
+      userData: {
+        username: 'Anna'
       }
     });
 
@@ -252,14 +263,35 @@ export class AppComponent implements OnInit {
     // ! 15. Assignment
 
     this.projectForm = new FormGroup({
-      'projectName': new FormControl(
+      projectName: new FormControl(
         null,
         [Validators.required, CustomValidators.invalidProjectName], CustomValidators.asyncInvalidProjectName),
-      'email': new FormControl(null, [Validators.required, Validators.email]),
-      'projectStatus': new FormControl('critical')
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      projectStatus: new FormControl('critical')
+    });
+
+
+
+  // ! 18. Http Requests
+
+
+    this.errorSub = this.postsService.error.subscribe(errorMessage => {
+      this.error = errorMessage;
+    });
+
+    this.isFetching = true;
+    this.postsService.fetchPosts().subscribe(posts => {
+      this.isFetching = false;
+      this.loadedPosts = posts;
+    }, error => {
+      // this.isFetching = false;
+      this.error = error.message;
     });
   }
 
+  ngOnDestroy() {
+    this.errorSub.unsubscribe();
+  }
 
 
 
@@ -279,4 +311,37 @@ export class AppComponent implements OnInit {
       started: new Date(15, 1, 2017)
     });
   }
+
+
+// ! 18. Http Requests
+
+  onCreatePost(postData: Post) {
+    // Send Http request
+    this.postsService.createAndStorePost(postData.title, postData.content);
+  }
+
+  onFetchPosts() {
+    // Send Http request
+    this.isFetching = true;
+    this.postsService.fetchPosts().subscribe(posts => {
+      this.isFetching = false;
+      this.loadedPosts = posts;
+    }, error => {
+      this.isFetching = false;
+      this.error = error.message;
+      console.log(error);
+    });
+  }
+
+  onClearPosts() {
+    // Send Http request
+    this.postsService.deletePosts().subscribe(() => {
+      this.loadedPosts = [];
+    });
+  }
+
+  onHandleError() {
+    this.error = null;
+  }
+
 }

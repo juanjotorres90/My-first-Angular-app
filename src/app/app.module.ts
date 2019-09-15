@@ -39,6 +39,9 @@ import { ErrorPageComponent } from './error-page/error-page.component';
 import { ServerResolver } from './servers-dos/server-dos/server-resolver.service';
 import { ShortenPipe } from './shorten.pipe';
 import { FilterPipe } from './filter.pipe';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptorService } from './auth-interceptor.service';
+import { LoggingInterceptorService } from './logging-interceptor.service';
 
 
 
@@ -76,9 +79,28 @@ import { FilterPipe } from './filter.pipe';
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [AccountsService, LoggingService, CounterService, ServersService, AuthService, AuthGuard, CanDeactivateGuard, ServerResolver],
+  providers: [AccountsService,
+    LoggingService,
+    CounterService,
+    ServersService,
+    AuthService,
+    AuthGuard,
+    CanDeactivateGuard,
+    ServerResolver,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoggingInterceptorService,
+      multi: true
+    } // ! The order of the interceptors matters
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
