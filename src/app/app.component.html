@@ -349,7 +349,7 @@
           <h4>Your hobbies</h4>
           <button class="btn btn-secondary" type="button" (click)="onAddHobby()">Add Hobby</button>
           <div class="form-group"
-          *ngFor="let hobbyControl of signupFormR.get('hobbies').controls; let i = index">
+          *ngFor="let hobbyControl of getControls(); let i = index">
             <input type="text" class="form-control" [formControlName]="i">
           </div>
         </div>
@@ -403,6 +403,38 @@
       </form>
 
 
+    </div>
+  </div>
+</div>
+<hr>
+<div class="container">
+  <h3>17. Using Pipes to Transform Output</h3>
+</div>
+<hr>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-sm-10 col-md-8">
+      <input type="text" [(ngModel)]="filteredStatus">
+      <br>
+      <button class="btn btn-primary" (click)="onAddServer()">Add Server</button>
+      <br><br>
+      <h2>App Status: {{ appStatus | async }}</h2>
+      <hr>
+      <ul class="list-group">
+        <li
+          class="list-group-item d-flex align-items-center"
+          *ngFor="let server of servers | filter:filteredStatus:'status'"
+          [ngClass]="getStatusClasses(server)">
+
+          <strong>{{ server.name | shorten:15 }}&nbsp;</strong> |
+          {{ server.instanceType | uppercase }} |
+          {{ server.started | date: 'fullDate' | uppercase}}
+          <span
+          class="badge badge-secondary badge-pill ml-auto">
+          {{ server.status }}
+        </span>
+        </li>
+      </ul>
     </div>
   </div>
 </div>

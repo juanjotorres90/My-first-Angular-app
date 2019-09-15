@@ -37,6 +37,8 @@ import { AuthGuard } from './auth-guard.service';
 import { CanDeactivateGuard } from './servers-dos/edit-server/can-deactivate-guard.service';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { ServerResolver } from './servers-dos/server-dos/server-resolver.service';
+import { ShortenPipe } from './shorten.pipe';
+import { FilterPipe } from './filter.pipe';
 
 
 
@@ -66,7 +68,9 @@ import { ServerResolver } from './servers-dos/server-dos/server-resolver.service
     ServersDosComponent,
     ServerDosComponent,
     PageNotFoundComponent,
-    ErrorPageComponent
+    ErrorPageComponent,
+    ShortenPipe,
+    FilterPipe
   ],
   imports: [
     BrowserModule,
